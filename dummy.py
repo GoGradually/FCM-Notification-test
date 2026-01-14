@@ -3,7 +3,7 @@ import json
 import random
 import string
 
-N = 60_0
+N = 6_000
 
 
 ALPHABET = string.ascii_letters + string.digits
@@ -15,7 +15,7 @@ with open("dummy.csv", "w", newline="", encoding="utf-8") as f:
     w = csv.writer(f)
     w.writerow(["id","member_id","device_id", "token"])
     for i in range(N):
-        w.writerow([i, i % 200, f"device_{i}", random_token_152()])
+        w.writerow([i, i % 2000, f"device_{i}", random_token_152()])
 print("written:", N)
 
 

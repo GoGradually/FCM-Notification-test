@@ -12,7 +12,8 @@ class PushController(
     private val notificationSchedulerV1: NotificationSchedulerV1,
     private val notificationSchedulerV2: NotificationSchedulerV2,
     private val notificationSchedulerV3: NotificationSchedulerV3,
-    private val notificationSchedulerV4: NotificationSchedulerV4
+    private val notificationSchedulerV4: NotificationSchedulerV4,
+    private val notificationSchedulerV5: NotificationSchedulerV5
 ) {
     @GetMapping("/v0")
     fun testV0() {
@@ -37,5 +38,10 @@ class PushController(
     @GetMapping("/v4")
     fun testV4() {
         notificationSchedulerV4.dispatchDueNotifications()
+    }
+
+    @GetMapping("/v5")
+    fun testV5() {
+        notificationSchedulerV5.dispatchDueNotifications()
     }
 }

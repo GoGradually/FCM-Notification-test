@@ -31,15 +31,15 @@ class MockFcmServiceV5(
 
     fun sendNotificationToOwner(ownerId: Long): MutableList<Future<*>> {
 
-        val getSubscriptionTime = measureTimeMillis {
+        val elapsedTimeForGetSubscription = measureTimeMillis {
             pushSubscriptionRepository.findAllByMemberId(ownerId)
         }
-        logger.info("Get subscription time: {} ms", getSubscriptionTime)
+        logger.info("subscription time: {} ms", elapsedTimeForGetSubscription)
         val subscriptions = pushSubscriptionRepository.findAllByMemberId(ownerId)
 
         val futures = mutableListOf<Future<*>>()
 
-        val getPushMessageTime = measureTimeMillis {
+        val elapsedTimeForGetPushMessage = measureTimeMillis {
             subscriptions.forEach { subscription: PushSubscription ->
                 futures.add(
                     threadPoolExecutor.submit {
@@ -49,7 +49,7 @@ class MockFcmServiceV5(
             }
         }
 
-        logger.info("Get push message time: {} ms", getPushMessageTime)
+        logger.info("push message time: {} ms", elapsedTimeForGetPushMessage)
 
         return futures
     }

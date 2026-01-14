@@ -1,5 +1,6 @@
 package me.gogradually.fcmnotificationtest.application
 
+import me.gogradually.fcmnotificationtest.common.LogElapsedTime
 import me.gogradually.fcmnotificationtest.domain.PushSubscriptionRepository
 import me.gogradually.fcmnotificationtest.infrastrcuture.MockFcmServiceV2
 import org.springframework.stereotype.Service
@@ -19,6 +20,7 @@ class NotificationSchedulerV2(
         threadPoolExecutor.allowCoreThreadTimeOut(true)
     }
 
+    @LogElapsedTime
     fun dispatchDueNotifications() {
         val dueNotificationOwners = (0 until 200_000L).toList()
 

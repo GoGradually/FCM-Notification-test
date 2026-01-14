@@ -9,12 +9,15 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
+/**
+ * V1 + 스레드 풀을 늘린 버전
+ */
 @Service
 class NotificationSchedulerV2(
     private val pushSubscriptionRepository: PushSubscriptionRepository, private val pushService: MockFcmServiceV2
 ) {
 
-    val threadPoolExecutor = ThreadPoolExecutor(100, 100, 60L, TimeUnit.MINUTES, LinkedBlockingQueue())
+    val threadPoolExecutor = ThreadPoolExecutor(500, 500, 60L, TimeUnit.MINUTES, LinkedBlockingQueue())
 
     init {
         threadPoolExecutor.allowCoreThreadTimeOut(true)
@@ -22,7 +25,7 @@ class NotificationSchedulerV2(
 
     @LogElapsedTime
     fun dispatchDueNotifications() {
-        val dueNotificationOwners = (0 until 200_000L).toList()
+        val dueNotificationOwners = (0 until 2_000L).toList()
 
         val futures = mutableListOf<Future<*>>()
 

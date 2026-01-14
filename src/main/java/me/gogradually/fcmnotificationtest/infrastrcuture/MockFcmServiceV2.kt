@@ -12,7 +12,9 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
-
+/**
+ * V1 + 스레드 풀을 늘린 버전
+ */
 @Service
 class MockFcmServiceV2(
     private val mockFcmProcessor: MockFcmProcessor,
@@ -20,7 +22,7 @@ class MockFcmServiceV2(
 ) :
     PushService {
 
-    val threadPoolExecutor = ThreadPoolExecutor(100, 100, 60L, TimeUnit.SECONDS, LinkedBlockingQueue())
+    val threadPoolExecutor = ThreadPoolExecutor(500, 500, 60L, TimeUnit.SECONDS, LinkedBlockingQueue())
     val logger = LoggerFactory.getLogger(MockFcmServiceV2::class.java)
 
     init {

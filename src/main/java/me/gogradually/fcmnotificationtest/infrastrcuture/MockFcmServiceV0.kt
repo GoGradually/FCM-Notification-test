@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class MockFcmService(
+class MockFcmServiceV0(
     private val mockFcmProcessor: MockFcmProcessor,
     private val pushSubscriptionRepository: PushSubscriptionRepository
 ) :

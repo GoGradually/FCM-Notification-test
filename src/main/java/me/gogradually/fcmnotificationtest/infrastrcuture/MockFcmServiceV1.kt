@@ -4,8 +4,13 @@ import me.gogradually.fcmnotificationtest.application.PushService
 import me.gogradually.fcmnotificationtest.domain.PushSubscription
 import me.gogradually.fcmnotificationtest.domain.PushSubscriptionRepository
 import me.gogradually.fcmnotificationtest.external.MockFcmProcessor
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.concurrent.Future
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 
 @Service
@@ -15,13 +20,15 @@ class MockFcmServiceV1(
 ) :
     PushService {
 
+    val threadPoolExecutor = ThreadPoolExecutor(100, 100, 60L, TimeUnit.SECONDS, LinkedBlockingQueue())
+    val logger = LoggerFactory.getLogger(MockFcmServiceV1::class.java)
+
+    init {
+        threadPoolExecutor.allowCoreThreadTimeOut(true)
+    }
 
     override fun sendPushMessage(token: String, ownerId: Long) {
-        try {
-            mockFcmProcessor.sendMessage(token, ownerId)
-        } catch (e: Exception) {
-            pushSubscriptionRepository.deleteByToken(token)
-        }
+        mockFcmProcessor.sendMessage(token, ownerId)
     }
 
 
@@ -30,8 +37,23 @@ class MockFcmServiceV1(
         val subscriptions =
             pushSubscriptionRepository.findAllByMemberId(ownerId)
 
+        val futures = mutableListOf<Future<*>>()
+
         subscriptions.forEach { subscription: PushSubscription ->
-            sendPushMessage(subscription.token, ownerId)
+            futures.add(
+                threadPoolExecutor.submit {
+                    sendPushMessage(subscription.token, ownerId)
+                }
+            )
+        }
+
+        for (future in futures) {
+            try {
+                future.get()
+            } catch (e: Exception) {
+                val failedToken = e.cause?.message?.substringAfterLast(": ") ?: continue
+                pushSubscriptionRepository.deleteByToken(failedToken)
+            }
         }
     }
 }

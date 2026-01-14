@@ -18,7 +18,7 @@ class MockFcmProcessor {
         scope.async {
             delay(100.milliseconds)
             if (ownerId % 100L == 0L) {
-                throw Exception("Failed to send message to token: $token")
+                throw Exception(token)
             }
             ownerId
         }.await()

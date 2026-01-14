@@ -51,7 +51,7 @@ class MockFcmServiceV1(
             try {
                 future.get()
             } catch (e: Exception) {
-                val failedToken = e.cause?.message?.substringAfterLast(": ") ?: continue
+                val failedToken = e.cause?.message ?: continue
                 pushSubscriptionRepository.deleteByToken(failedToken)
             }
         }

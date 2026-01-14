@@ -3,7 +3,10 @@ package me.gogradually.fcmnotificationtest.domain
 import jakarta.persistence.*
 
 @Entity
-@Table(uniqueConstraints = [UniqueConstraint(name = "uk_memberId_deviceId", columnNames = ["member_id", "device_id"])])
+@Table(
+    uniqueConstraints = [UniqueConstraint(name = "uk_memberId_deviceId", columnNames = ["member_id", "device_id"])],
+    indexes = [Index(columnList = "token", name = "idx_token")]
+)
 class PushSubscription(
     memberId: Long,
     deviceId: String,

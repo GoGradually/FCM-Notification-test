@@ -31,7 +31,7 @@ class NotificationSchedulerV6(
                 MockFcmServiceV6.Message(it.token, it.memberId)
             }.toList()
 
-            val futures = pushService.sendNotificationToOwner(messages)
+            val futures = pushService.sendNotificationsEachOwner(messages)
 
             for (future in futures) {
                 try {

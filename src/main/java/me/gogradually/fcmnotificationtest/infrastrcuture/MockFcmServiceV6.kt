@@ -27,7 +27,7 @@ class MockFcmServiceV6(
     }
 
 
-    fun sendNotificationToOwner(messages: List<Message>): MutableList<Future<*>> {
+    fun sendNotificationsEachOwner(messages: List<Message>): MutableList<Future<*>> {
 
         val futures = mutableListOf<Future<*>>()
 

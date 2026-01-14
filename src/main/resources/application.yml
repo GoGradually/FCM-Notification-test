@@ -4,7 +4,7 @@ server:
 spring:
   jpa:
     hibernate:
-      ddl-auto: update    # dev: update, create-drop / prod: validate 추천
+      ddl-auto: create    # dev: update, create-drop / prod: validate 추천
     properties:
       hibernate:
         format_sql: true

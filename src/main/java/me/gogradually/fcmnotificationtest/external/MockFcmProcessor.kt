@@ -1,14 +1,7 @@
 package me.gogradually.fcmnotificationtest.external
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.springframework.stereotype.Service
-import kotlin.random.Random
-import kotlin.random.nextInt
 import kotlin.time.Duration.Companion.milliseconds
 
 @Service
@@ -24,7 +17,7 @@ class MockFcmProcessor {
     private suspend fun receiveMessage(token: String, ownerId: Long) {
         scope.async {
             delay(100.milliseconds)
-            if (ownerId == 100L) {
+            if (ownerId % 100L == 0L) {
                 throw Exception("Failed to send message to token: $token")
             }
             ownerId
